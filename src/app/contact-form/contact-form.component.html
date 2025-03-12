@@ -1,0 +1,54 @@
+<h2 class="mb-5">
+    @if (contact){
+        Editar
+    } @else {
+        Nuevo
+    } contacto
+</h2>
+<div class="row row-cols-3 justify-content-center">
+    @if (form) {
+ <div>
+    @if (errors.length) {
+        <div class="alert alert-danger">
+            <p>Han sucedidos los siguientes errores</p>
+            <ul>
+                @for(error of errors; track error) {
+                    <li> {{error}}</li>
+                }
+            </ul>
+        </div>
+    }
+<form [formGroup]="form" (ngSubmit)="save()">
+<div class="mb-3">
+    <label for="name" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="name" placeholder="Nombre" formControlName="name">  
+    @if (form.get('name')?.hasError('required') && form.get('name')?.touched){
+        <p class="invalid-feedback d-block">El nombre es obligatorio</p>
+
+    }
+</div>
+<div class="mb-3">  
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email"> 
+    @if (form.get('email')?.hasError('required') && form.get('email')?.touched){
+        <p class="invalid-feedback d-block">El email es obligatorio</p>
+
+    }
+    @if (form.get('email')?.hasError('email')){
+        <p class="invalid-feedback d-block">El email es inválido</p>
+
+    }
+</div>
+<div class="text-end">
+    <button class="btn btn-light" type="button" routerLink="/">Cancelar</button>
+    <button class="btn btn-primary ms-2" type="sumbit">  @if (contact){
+        Actualizar
+    } @else {
+        Crear
+    } contacto</button>
+   
+</div>
+</form>
+ </div>
+    }
+</div>
