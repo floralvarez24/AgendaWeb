@@ -102,4 +102,33 @@ class ContactServiceTest {
 
         verify(repo).delete(existing);
     }
+
+    @Test
+    void update_throws_when_id_not_found() {
+        // Arrange
+        ContactDTO dto = new ContactDTO();
+        dto.setName("New");
+        dto.setEmail("new@mail.com");
+
+        when(repo.findById(999)).thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThrows(ResourceNotFoundException.class, () -> service.update(999, dto));
+
+        // No debe intentar guardar si no existe
+        verify(repo, never()).save(any());
+    }
+    @Test
+    void delete_throws_when_id_not_found() {
+        // Arrange
+        when(repo.findById(999)).thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThrows(ResourceNotFoundException.class, () -> service.delete(999));
+
+        // No debe intentar borrar si no existe
+        verify(repo, never()).delete(any());
+        verify(repo, never()).deleteById(any());
+    }
+
 }
